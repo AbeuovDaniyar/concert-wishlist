@@ -1,0 +1,76 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: concert-wishlist
+  
+  # Database Configuration - Local MySQL
+  datasource:
+    url: jdbc:mysql://localhost:3306/concert_wishlist?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: Saku1892
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    
+  # JPA Configuration - Auto-create tables
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        
+  # Security & OAuth2 Configuration
+  security:
+    oauth2:
+      client:
+        registration:
+          spotify:
+            client-id: 04ce6df4b47645e9be5cf4824d8ca1f1
+            client-secret: 2306912a76c446389845d3029d88bee8
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/spotify"
+            scope: user-read-private,user-read-email
+        provider:
+          spotify:
+            authorization-uri: https://accounts.spotify.com/authorize
+            token-uri: https://accounts.spotify.com/api/token
+            user-info-uri: https://api.spotify.com/v1/me
+            user-name-attribute: id
+            
+  # Development Tools
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+# Spotify API Configuration
+spotify:
+  api:
+    base-url: https://api.spotify.com/v1
+  client-id: 04ce6df4b47645e9be5cf4824d8ca1f1
+  client-secret: 2306912a76c446389845d3029d88bee8
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+
+# Logging Configuration
+logging:
+  level:
+    com.teamrhythm: DEBUG
+    org.springframework.security: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

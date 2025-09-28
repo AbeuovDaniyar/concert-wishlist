@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" th:with="activePage='wishlist'">
+<head>
+    <title>My Wishlist - Concert Wishlist</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+        <div>
+            <h2 class="mb-2">
+                <i class="fas fa-heart text-danger me-2"></i>Your Wishlist
+            </h2>
+            <p class="text-muted mb-0">Prioritise the artists you most want to experience live.</p>
+        </div>
+        <a th:href="@{/artists}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Add Artist
+        </a>
+    </div>
+
+    <!-- Wishlist Items -->
+    <div th:if="${wishlist != null and not #lists.isEmpty(wishlist)}">
+        <div class="row g-4">
+            <div th:each="item : ${wishlist}" class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <!-- Artist Header -->
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0 me-3">
+                                <div class="ratio ratio-1x1 rounded-circle overflow-hidden bg-light" style="width: 60px;">
+                                    <img th:if="${item.artist.imageUrl != null and !#strings.isEmpty(item.artist.imageUrl)}"
+                                         th:src="${item.artist.imageUrl}"
+                                         th:alt="${item.artist.name}"
+                                         class="w-100 h-100 object-fit-cover">
+                                    <div th:unless="${item.artist.imageUrl != null and !#strings.isEmpty(item.artist.imageUrl)}"
+                                         class="d-flex align-items-center justify-content-center h-100 text-muted">
+                                        <i class="fas fa-user-music"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1" th:text="${item.artist.name}">Artist Name</h5>
+                                <div class="small text-muted">
+                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                    <span th:text="${item.city}">City</span>
+                                    <span th:if="${item.venue}" th:text="' • ' + ${item.venue}"></span>
+                                </div>
+                            </div>
+                            <span class="badge fs-6" 
+                                  th:classappend="${item.priority.name() == 'HIGH'} ? ' bg-danger' : (${item.priority.name() == 'MEDIUM'} ? ' bg-warning text-dark' : ' bg-success')" 
+                                  th:text="${item.priority}">Priority</span>
+                        </div>
+
+                        <!-- Details -->
+                        <div class="row g-2 mb-3 small text-muted">
+                            <div class="col-auto" th:if="${item.targetDate}">
+                                <i class="fas fa-calendar me-1"></i>
+                                Target: <span th:text="${#temporals.format(item.targetDate, 'MMM dd, yyyy')}">Date</span>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clock me-1"></i>
+                                Added <span th:text="${#temporals.format(item.createdAt, 'MMM dd, yyyy')}">Date</span>
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div th:if="${item.notes}" class="mb-3">
+                            <div class="bg-light rounded p-2 small">
+                                <i class="fas fa-sticky-note me-1 text-muted"></i>
+                                <span th:text="${item.notes}">Notes</span>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="d-flex flex-wrap gap-2">
+                            <a th:href="@{/attended/add(wishlistId=${item.id})}" class="btn btn-success btn-sm">
+                                <i class="fas fa-check me-1"></i>Mark Attended
+                            </a>
+                            <form th:action="@{/wishlist/delete/{id}(id=${item.id})}" method="post" class="d-inline"
+                                  onsubmit="return confirm('Remove this artist from your wishlist?');">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash me-1"></i>Remove
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div th:if="${wishlist == null or #lists.isEmpty(wishlist)}" class="text-center py-5">
+        <i class="fas fa-heart fa-4x text-muted mb-3"></i>
+        <h4 class="text-muted">Your wishlist is empty</h4>
+        <p class="text-muted mb-4">Search for an artist you can't wait to see and add them with a single click.</p>
+        <a th:href="@{/artists}" class="btn btn-primary btn-lg">
+            <i class="fas fa-search me-2"></i>Find Artists
+        </a>
+    </div>
+</div>
+</body>
+</html>

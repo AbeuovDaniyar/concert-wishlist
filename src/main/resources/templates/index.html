@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" th:with="activePage='home'">
+<head>
+    <title>Concert Wishlist - Home</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 fw-bold mb-3">Discover. Dream. <span class="text-primary">Attend.</span></h1>
+            <p class="lead text-muted mb-4">Search Spotify's catalogue, curate a personal wishlist, and celebrate the concerts you've already enjoyed.</p>
+            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                <a class="btn btn-primary btn-lg px-4" th:href="@{/artists}">
+                    <i class="fas fa-search me-2"></i>Find Artists
+                </a>
+                <a class="btn btn-outline-primary btn-lg px-4" th:href="@{/wishlist}">
+                    <i class="fas fa-heart me-2"></i>View Wishlist
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="mb-4">
+                        <i class="fas fa-search fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title fw-semibold">Rich Artist Search</h5>
+                    <p class="card-text text-muted">Leverage Spotify metadata, genres, popularity, and imagery to explore new performers.</p>
+                    <a th:href="@{/artists}" class="btn btn-outline-primary">Browse Artists</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="mb-4">
+                        <i class="fas fa-heart fa-3x text-danger"></i>
+                    </div>
+                    <h5 class="card-title fw-semibold">Personalised Wishlist</h5>
+                    <p class="card-text text-muted">Capture priorities, dream venues, and target dates so nothing slips through the cracks.</p>
+                    <a th:href="@{/wishlist}" class="btn btn-outline-primary">Manage Wishlist</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="mb-4">
+                        <i class="fas fa-flag-checkered fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title fw-semibold">Celebrate Memories</h5>
+                    <p class="card-text text-muted">Mark shows as attended, rate the night, and jot down the highlights you never want to forget.</p>
+                    <a th:href="@{/attended}" class="btn btn-outline-primary">See Attended</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

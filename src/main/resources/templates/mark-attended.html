@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" th:with="activePage='attended'">
+<head>
+    <title>Mark as Attended - Concert Wishlist</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow">
+                <!-- Card Header -->
+                <div class="card-header bg-success text-white border-0">
+                    <h3 class="mb-0 fw-semibold">
+                        <i class="fas fa-check me-2"></i>Mark Concert as Attended
+                    </h3>
+                </div>
+                
+                <!-- Card Body -->
+                <div class="card-body p-4">
+                    <div class="mb-4">
+                        <p class="text-muted mb-0">
+                            Log the details of the show so it lives forever in your attended history.
+                        </p>
+                    </div>
+
+                    <form th:action="@{/attended/add}" method="post" th:object="${attendedDto}">
+                        <input type="hidden" th:field="*{wishlistId}">
+
+                        <!-- Concert Date -->
+                        <div class="mb-3">
+                            <label for="concertDate" class="form-label fw-medium">
+                                Concert Date <span class="text-danger">*</span>
+                            </label>
+                            <input type="date" id="concertDate" th:field="*{concertDate}" class="form-control" required>
+                            <div th:if="${#fields.hasErrors('concertDate')}" class="text-danger small mt-1" th:errors="*{concertDate}"></div>
+                        </div>
+
+                        <!-- Venue -->
+                        <div class="mb-3">
+                            <label for="venue" class="form-label fw-medium">
+                                Venue <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" id="venue" th:field="*{venue}" class="form-control" 
+                                   placeholder="Where did you see them?" required>
+                            <div th:if="${#fields.hasErrors('venue')}" class="text-danger small mt-1" th:errors="*{venue}"></div>
+                        </div>
+
+                        <!-- Rating -->
+                        <div class="mb-3">
+                            <label for="rating" class="form-label fw-medium">Rating</label>
+                            <select id="rating" th:field="*{rating}" class="form-select">
+                                <option value="">No rating</option>
+                                <option value="1">⭐ (1/5) - Disappointing</option>
+                                <option value="2">⭐⭐ (2/5) - Below expectations</option>
+                                <option value="3">⭐⭐⭐ (3/5) - Good show</option>
+                                <option value="4">⭐⭐⭐⭐ (4/5) - Great performance</option>
+                                <option value="5">⭐⭐⭐⭐⭐ (5/5) - Absolutely incredible</option>
+                            </select>
+                            <div class="form-text">Rate your overall experience</div>
+                        </div>
+
+                        <!-- Memories -->
+                        <div class="mb-4">
+                            <label for="memories" class="form-label fw-medium">Memories & Notes</label>
+                            <textarea id="memories" th:field="*{memories}" rows="4" class="form-control" 
+                                      placeholder="Favourite songs, surprise guests, standout moments, who you went with..."></textarea>
+                            <div class="form-text">Capture the highlights you never want to forget</div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check me-2"></i>Save Attendance
+                            </button>
+                            <a th:href="@{/wishlist}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Return to Wishlist
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

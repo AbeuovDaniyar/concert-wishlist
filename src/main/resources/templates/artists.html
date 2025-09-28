@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" th:with="activePage='artists'">
+<head>
+    <title>Search Artists - Concert Wishlist</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="mb-2">
+                <i class="fas fa-search text-primary me-2"></i>Discover Artists
+            </h2>
+            <p class="text-muted">Powered by Spotify - add a favourite straight to your wishlist.</p>
+        </div>
+    </div>
+
+    <!-- Search Form -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" th:action="@{/artists/search}">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="fas fa-magnifying-glass text-muted"></i>
+                    </span>
+                    <input type="text" name="query" class="form-control border-start-0 ps-0" 
+                           placeholder="Search for an artist, band, or genre" th:value="${query}">
+                    <button class="btn btn-primary px-4" type="submit">Search</button>
+                </div>
+                <div class="form-text mt-2">
+                    <i class="fas fa-lightbulb me-1"></i>
+                    Tip: Try combining artist names with cities (e.g., "Coldplay London").
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Search Results -->
+    <div th:if="${artists}">
+        <!-- Results Count -->
+        <div class="mb-3" th:if="${not #lists.isEmpty(artists)}">
+            <p class="text-muted mb-0">
+                Found <strong th:text="${#lists.size(artists)}">0</strong> result(s) for 
+                "<span th:text="${query}">query</span>"
+            </p>
+        </div>
+
+        <!-- Artist Cards -->
+        <div class="row g-4" th:if="${not #lists.isEmpty(artists)}">
+            <div th:each="artist : ${artists}" class="col-xl-3 col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="position-relative bg-light" style="height: 250px;">
+                        <img th:if="${artist.imageUrl != null and !#strings.isEmpty(artist.imageUrl)}"
+                             th:src="${artist.imageUrl}"
+                             th:alt="${artist.name}"
+                             class="card-img-top w-100 h-100 object-fit-cover">
+                        <div th:unless="${artist.imageUrl != null and !#strings.isEmpty(artist.imageUrl)}"
+                             class="d-flex flex-column align-items-center justify-content-center h-100 text-muted">
+                            <i class="fas fa-user-music fa-3x mb-2"></i>
+                            <span class="fw-medium">No Image</span>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-2" th:text="${artist.name}">Artist Name</h5>
+                        <p class="card-text small text-muted mb-3">
+                            <i class="fas fa-music me-1"></i>
+                            <span th:text="${#lists.isEmpty(artist.genres) ? 'Genre not available' : #strings.listJoin(artist.genres, ', ')}">Genres</span>
+                        </p>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="badge bg-light text-dark border">
+                                <i class="fas fa-chart-line me-1"></i>
+                                <span th:text="${artist.popularity}">0</span>/100
+                            </span>
+                            <a th:href="@{/wishlist/add(spotifyArtistId=${artist.id}, artistName=${artist.name})}" 
+                               class="btn btn-primary btn-sm">
+                                <i class="fas fa-heart me-1"></i>Add to Wishlist
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Results -->
+        <div class="text-center py-5" th:if="${#lists.isEmpty(artists)}">
+            <i class="fas fa-search fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">No artists found</h4>
+            <p class="text-muted">Try a different search term or check your spelling.</p>
+        </div>
+    </div>
+
+    <!-- Initial State -->
+    <div th:if="${artists == null}" class="text-center py-5">
+        <i class="fas fa-music fa-4x text-muted mb-3"></i>
+        <h4 class="text-muted">Start Exploring</h4>
+        <p class="text-muted mb-4">Use the search box above to look up performers and add them to your wishlist.</p>
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <span class="badge bg-light text-dark">Rock</span>
+            <span class="badge bg-light text-dark">Pop</span>
+            <span class="badge bg-light text-dark">Jazz</span>
+            <span class="badge bg-light text-dark">Electronic</span>
+            <span class="badge bg-light text-dark">Hip Hop</span>
+            <span class="badge bg-light text-dark">Country</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
