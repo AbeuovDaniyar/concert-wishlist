@@ -1,14 +1,16 @@
 package com.teamrhythm.concertwishlist.service;
 
-import com.teamrhythm.concertwishlist.entity.User;
-import com.teamrhythm.concertwishlist.repository.UserRepository;
-import com.teamrhythm.concertwishlist.security.CustomUserDetails;
+import java.util.Optional;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import com.teamrhythm.concertwishlist.entity.User;
+import com.teamrhythm.concertwishlist.repository.UserRepository;
+import com.teamrhythm.concertwishlist.security.CustomOAuth2User;
+import com.teamrhythm.concertwishlist.security.CustomUserDetails;
 
 @Service
 public class AuthenticatedUserService {
@@ -71,6 +73,12 @@ public class AuthenticatedUserService {
     }
 
     private Optional<User> resolveOAuth2User(OAuth2User oauth2User) {
+        // Check if it's our CustomOAuth2User
+        if (oauth2User instanceof CustomOAuth2User customOAuth2User) {
+            return Optional.of(customOAuth2User.getUser());
+        }
+
+        // Fallback to existing logic
         String spotifyId = oauth2User.getAttribute("id");
         if (spotifyId != null) {
             Optional<User> user = userRepository.findBySpotifyUserId(spotifyId);

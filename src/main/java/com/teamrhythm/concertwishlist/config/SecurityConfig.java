@@ -8,50 +8,45 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.teamrhythm.concertwishlist.security.CustomOAuth2UserService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final CustomOAuth2UserService customOAuth2UserService;
+
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService) {
+        this.customOAuth2UserService = customOAuth2UserService;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /*
-     * @Bean
-     * public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-     * http
-     * .authorizeHttpRequests(authz -> authz
-     * .requestMatchers("/", "/login", "/register", "/css/**", "/js/**",
-     * "/images/**", "/error").permitAll()
-     * .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll() // Allow
-     * OAuth2 endpoints
-     * .anyRequest().authenticated()
-     * )
-     * .oauth2Login(oauth2 -> oauth2
-     * .loginPage("/login")
-     * .defaultSuccessUrl("/artists", true) // Redirect here after Spotify login
-     * .failureUrl("/login?error=true")
-     * )
-     * .logout(logout -> logout
-     * .logoutUrl("/logout")
-     * .logoutSuccessUrl("/")
-     * .permitAll()
-     * )
-     * .csrf(csrf -> csrf.disable());
-     * 
-     * return http.build();
-     * }
-     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authz -> authz
-                        .anyRequest().permitAll() // Allow everything for now
+            .authorizeHttpRequests(authz -> authz
+                .requestMatchers("/", "/login", "/error", "/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .oauth2Login(oauth2 -> oauth2
+                .loginPage("/login")
+                .userInfoEndpoint(userInfo -> userInfo
+                    .userService(customOAuth2UserService)  // Add this!
                 )
-                .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/artists", true))
-                .csrf(csrf -> csrf.disable());
+                .defaultSuccessUrl("/artists", true)
+                .failureUrl("/login?error=oauth")
+            )
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .permitAll()
+            )
+            .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
