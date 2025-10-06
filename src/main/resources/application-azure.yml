@@ -7,7 +7,7 @@ spring:
   
   # Azure SQL Database Configuration
   datasource:
-    url: jdbc:mysql://concert-wishlist.mysql.database.azure.com:3306?useSSL=true&requireSSL=true
+    url: jdbc:mysql://concert-wishlist.mysql.database.azure.com:3306/concert_wishlist?useSSL=true&requireSSL=true
     username: danny
     password: Saku1892
     driver-class-name: com.mysql.cj.jdbc.Driver  # Changed from SQL Server
