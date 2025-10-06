@@ -7,8 +7,8 @@ spring:
   
   # Database Configuration - Local MySQL
   datasource:
-    url: jdbc:mysql://localhost:3306/concert_wishlist?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
-    username: root
+    url: jdbc:mysql://concert-wishlist.mysql.database.azure.com:3306?useSSL=true&requireSSL=true
+    username: danny
     password: Saku1892
     driver-class-name: com.mysql.cj.jdbc.Driver
     

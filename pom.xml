@@ -13,8 +13,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>concert-wishlist</name>
     <description>Concert Wishlist App</description>
+    <packaging>jar</packaging>
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
