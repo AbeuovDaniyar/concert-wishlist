@@ -10,7 +10,7 @@ spring:
     url: jdbc:mysql://concert-wishlist.mysql.database.azure.com:3306?useSSL=true&requireSSL=true
     username: danny
     password: Saku1892
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     
   # JPA Configuration for SQL Server
   jpa:
