@@ -10,16 +10,15 @@ spring:
     url: jdbc:mysql://concert-wishlist.mysql.database.azure.com:3306?useSSL=true&requireSSL=true
     username: danny
     password: Saku1892
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver  # Changed from SQL Server
     
-  # JPA Configuration for SQL Server
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.SQLServerDialect
+        dialect: org.hibernate.dialect.MySQLDialect  # Changed from SQLServerDialect
         format_sql: true
         
   # Security & OAuth2 Configuration
