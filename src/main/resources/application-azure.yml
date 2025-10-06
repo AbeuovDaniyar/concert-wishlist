@@ -5,21 +5,21 @@ spring:
   application:
     name: concert-wishlist
   
-  # Database Configuration - Local MySQL
+  # Azure SQL Database Configuration
   datasource:
     url: jdbc:mysql://concert-wishlist.mysql.database.azure.com:3306?useSSL=true&requireSSL=true
     username: danny
     password: Saku1892
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     
-  # JPA Configuration - Auto-create tables
+  # JPA Configuration for SQL Server
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.SQLServerDialect
         format_sql: true
         
   # Security & OAuth2 Configuration
@@ -39,13 +39,6 @@ spring:
             token-uri: https://accounts.spotify.com/api/token
             user-info-uri: https://api.spotify.com/v1/me
             user-name-attribute: id
-            
-  # Development Tools
-  devtools:
-    restart:
-      enabled: true
-    livereload:
-      enabled: true
 
 # Spotify API Configuration
 spotify:
@@ -54,23 +47,8 @@ spotify:
   client-id: 04ce6df4b47645e9be5cf4824d8ca1f1
   client-secret: 2306912a76c446389845d3029d88bee8
 
-# Actuator Configuration
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics
-  endpoint:
-    health:
-      show-details: when_authorized
-
 # Logging Configuration
 logging:
   level:
-    com.teamrhythm: DEBUG
-    org.springframework.security: INFO
-    org.springframework.web: INFO
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-  pattern:
-    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    com.teamrhythm: INFO
+    org.springframework.security: WARN
