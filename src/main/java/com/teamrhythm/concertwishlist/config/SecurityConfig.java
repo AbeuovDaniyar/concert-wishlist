@@ -17,7 +17,6 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
 
-    // Add @Lazy here to break the circular dependency
     public SecurityConfig(@Lazy CustomOAuth2UserService customOAuth2UserService) {
         this.customOAuth2UserService = customOAuth2UserService;
     }
